@@ -7,7 +7,7 @@ const fifo = (
   let lastIndex = 0;
 
   const stack = new Array(size);
-  const history = [];
+  const history = new Array(size);
 
   inputs.forEach((input) => {
     if (stack.indexOf(input) === -1) {
@@ -24,12 +24,22 @@ const fifo = (
       hit = hit + 1;
     }
 
-    history.push([ ...stack ]);
+    for (let i = 0; i < size; i++) {
+      if (!Array.isArray(history[i])) {
+        history[i] = [];
+      }
+
+      history[i].push(stack[i]);
+    }
   });
 
-  return {
+  const source = document.getElementById('rows').innerHTML;
+  const template = Handlebars.compile(source);
+  const html = template({
     miss,
     hit,
     history,
-  };
+  });
+
+  document.querySelector('.result').innerHTML = html;
 };
