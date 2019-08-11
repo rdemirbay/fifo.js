@@ -8,8 +8,9 @@ const fifo = (
 
   const stack = new Array(size);
   const history = new Array(size);
+  const hitIndexs = new Array();
 
-  inputs.forEach((input) => {
+  inputs.forEach((input, index) => {
     if (stack.indexOf(input) === -1) {
       miss = miss + 1;
 
@@ -22,24 +23,48 @@ const fifo = (
       }
     } else {
       hit = hit + 1;
+
+      hitIndexs.push({
+        input,
+        index,
+      });
     }
 
     for (let i = 0; i < size; i++) {
       if (!Array.isArray(history[i])) {
-        history[i] = [];
+        history[i] = new Array();
       }
 
       history[i].push(stack[i]);
     }
   });
 
+  Handlebars.registerHelper('itContains', (num, index) => {
+    const found = hitIndexs.find((hit) => {
+      return hit.index === index;
+    });
+
+    if (found) {
+      if (found.input === num) {
+        return `${num}*`;
+      } else {
+        return '';
+      }
+    } else {
+      return num;
+    }
+  });
+
   const source = document.getElementById('rows').innerHTML;
   const template = Handlebars.compile(source);
+
   const html = template({
+    inputs,
     miss,
     hit,
+    hitIndexs,
     history,
   });
 
-  document.querySelector('.result').innerHTML = html;
+  document.querySelector('#result').innerHTML = html;
 };
