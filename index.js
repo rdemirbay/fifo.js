@@ -57,7 +57,6 @@ const fifo = (
 
   const source = document.getElementById('rows').innerHTML;
   const template = Handlebars.compile(source);
-
   const html = template({
     inputs,
     miss,
