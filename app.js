@@ -1,7 +1,29 @@
-const fifo = (
-  inputs = [1, 2, 3, 4, 2, 1, 5, 6, 2, 1, 2, 3, 7, 6, 3, 2, 1, 2, 3, 6],
-  size = 4
-) => {
+window.onload = () => {
+  const form = document.querySelector('#form');
+  form.onsubmit = sumbitForm.bind(form);
+}
+
+const sumbitForm = (event) => {
+  event.preventDefault();
+
+  let inputs = event.target.querySelector('#inputs').value;
+  let size = event.target.querySelector('#size').value;
+
+  inputs = inputs.split(',').map(input => parseInt(input));
+  size = parseInt(size);
+
+  if (inputs.findIndex(input => isNaN(input)) !== -1) {
+    return alert('Form inputs are not valid.');
+  }
+
+  if (isNaN(size)) {
+    return alert('Form size is not valid.');
+  }
+
+  return fifo(inputs, size);
+};
+
+const fifo = (inputs, size) => {
   let miss = 0;
   let hit = 0;
   let lastIndex = 0;
@@ -40,22 +62,16 @@ const fifo = (
   });
 
   Handlebars.registerHelper('itContains', (num, index) => {
-    const found = hitIndexs.find((hit) => {
-      return hit.index === index;
-    });
+    const found = hitIndexs.find(hit => hit.index === index);
 
-    if (found) {
-      if (found.input === num) {
-        return `${num}*`;
-      } else {
-        return '';
-      }
-    } else {
-      return num;
+    if (found && found.input === num) {
+      return `${num}*`;
     }
+
+    return num;
   });
 
-  const source = document.getElementById('rows').innerHTML;
+  const source = document.getElementById('resultTemplate').innerHTML;
   const template = Handlebars.compile(source);
   const html = template({
     inputs,

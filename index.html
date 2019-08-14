@@ -9,29 +9,35 @@
     <script src="./app.js"></script>
   </head>
   <body>
-    <div>
-      <p>For custom results, you can use/call `fifo(inputs:Array, size:Number)` function in the development console.</p>
-      <p>Like -> fifo([1, 2, 3, 2, 3], 3)</p>
-      <div id="result"></div>
-    </div>
-    <script id="rows" type="text/x-handlebars-template">
+    <form id="form">
+      <h2>Fifo Simulator</h2>
+      <div class="row">
+        <label for="inputs">Inputs:</label>
+        <textarea id="inputs" cols="30">1, 2, 3, 4, 2, 1, 5, 6, 2, 1, 2, 3, 7, 6, 3, 2, 1, 2, 3, 6</textarea>
+      </div>
+      <div class="row">
+        <label for="size">Cache Size:</label>
+        <input id="size" type="text" value="4" />
+      </div>
+      <div class="row">
+        <button type="submit">Run</button>
+      </div>
+    </form>
+    <div id="result"></div>
+    <script id="resultTemplate" type="text/x-handlebars-template">
       <p>Inputs: {{inputs}}</p>
       <table>
         {{#each history}}
         <tr>
           <td>Line {{@index}}</td>
           {{#each this}}
-          <td>
-            {{itContains this @index}}
-          </td>
+          <td>{{itContains this @index}}</td>
           {{/each}}
         </tr>
         {{/each}}
       </table>
-      <p>Miss: <b>{{miss}}</b> --- Hit: <b>{{hit}}</b> --- * means that there is a hit.</p>
-    </script>
-    <script>
-      fifo();
+      <p>Miss: <b>{{miss}}</b> --- Hit: <b>{{hit}}</b></p>
+      <p>* means that there is a hit.</p>
     </script>
   </body>
 </html>
