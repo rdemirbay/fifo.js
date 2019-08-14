@@ -4,21 +4,9 @@
     <title>fifo.js</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" />
+    <link rel="stylesheet" href="./app.css" />
     <script src="./handlebars.min-3ce4425.js"></script>
-    <script src="./index.js"></script>
-    <style>
-      #result { margin-top: 5em; }
-
-      table { border: 1px solid #ccc; }
-      table td {
-        padding: 15px;
-        border: solid #ccc;
-        border-width: 0 1px 1px 0;
-        text-align: center;
-      }
-      table td:last-child { border-right: 0; }
-      table tr:last-child td { border-bottom: 0; }
-    </style>
+    <script src="./app.js"></script>
   </head>
   <body>
     <div>
@@ -40,7 +28,7 @@
         </tr>
         {{/each}}
       </table>
-      <p>Miss: <b>{{miss}}</b> --- Hit: <b>{{hit}}</b> --- * means hit.</p>
+      <p>Miss: <b>{{miss}}</b> --- Hit: <b>{{hit}}</b> --- * means that there is a hit.</p>
     </script>
     <script>
       fifo();
