@@ -61,6 +61,8 @@ const fifo = (inputs, size) => {
     }
   });
 
+  const hitRatio = (hit / (miss + hit));
+
   Handlebars.registerHelper('itContains', (num, index) => {
     const found = hitIndexs.find(hit => hit.index === index);
 
@@ -79,6 +81,7 @@ const fifo = (inputs, size) => {
     hit,
     hitIndexs,
     history,
+    hitRatio,
   });
 
   document.querySelector('#result').innerHTML = html;
