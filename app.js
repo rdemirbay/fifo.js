@@ -66,11 +66,19 @@ const fifo = (inputs, size) => {
   Handlebars.registerHelper('itContains', (num, index) => {
     const found = hitIndexs.find(hit => hit.index === index);
 
-    if (found && found.input === num) {
-      return `${num}*`;
+    if (num) {
+      if (found && found.input === num) {
+        return `${num}*`;
+      }
+
+      return num;
     }
 
-    return num;
+    if (typeof num === 'undefined') {
+      return '';
+    }
+
+    return (found ? 'H' : 'M');
   });
 
   const source = document.getElementById('resultTemplate').innerHTML;

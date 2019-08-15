@@ -35,9 +35,14 @@
           {{/each}}
         </tr>
         {{/each}}
+        <tr>
+          <td></td>
+          {{#each inputs}}
+          <td>{{itContains null @index}}</td>
+          {{/each}}
+        </tr>
       </table>
-      <p>Miss: <b>{{miss}}</b> --- Hit: <b>{{hit}}</b> --- Hit Ratio: <b>{{hitRatio}}</b></p>
-      <p>* means that there is a hit.</p>
+      <p>Miss: <b>{{miss}}</b> --- Hit: <b>{{hit}}</b> --- Hit Ratio: <b>{{hitRatio}}</b> --- <b>*</b> means that there is a hit.</p>
     </script>
   </body>
 </html>
