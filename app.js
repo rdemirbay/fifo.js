@@ -3,8 +3,12 @@ window.onload = () => {
   form.onsubmit = sumbitForm.bind(form);
 }
 
+let interval;
+
 const sumbitForm = (event) => {
   event.preventDefault();
+
+  clearInterval(interval);
   
   const sbs = event.target.querySelector('#sbs').checked;
 
@@ -101,13 +105,13 @@ const fifo = (inputs, size, sbs) => {
     let cloneHistory = [];
     let cloneInputs = [];
 
-
-    setInterval(async () => {
+    interval = setInterval(() => {
       for (let i = 0; i < history.length; i++) {
         cloneHistory[i] = history[i].slice(0, steps);
       }
 
       cloneInputs = inputs.slice(0, steps);
+
       steps = steps + 1;
 
       const html = template({
@@ -119,6 +123,10 @@ const fifo = (inputs, size, sbs) => {
       });
 
       document.querySelector('#result').innerHTML = html;
+
+      if (steps === inputs.length) {
+        clearInterval(interval);
+      }
     }, 500);
   }
 };
