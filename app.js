@@ -5,6 +5,8 @@ window.onload = () => {
 
 const sumbitForm = (event) => {
   event.preventDefault();
+  
+  const sbs = event.target.querySelector('#sbs').checked;
 
   let inputs = event.target.querySelector('#inputs').value;
   let size = event.target.querySelector('#size').value;
@@ -20,10 +22,10 @@ const sumbitForm = (event) => {
     return alert('Form size is not valid.');
   }
 
-  return fifo(inputs, size);
+  return fifo(inputs, size, sbs);
 };
 
-const fifo = (inputs, size) => {
+const fifo = (inputs, size, sbs) => {
   let miss = 0;
   let hit = 0;
   let lastIndex = 0;
@@ -83,14 +85,40 @@ const fifo = (inputs, size) => {
 
   const source = document.getElementById('resultTemplate').innerHTML;
   const template = Handlebars.compile(source);
-  const html = template({
-    inputs,
-    miss,
-    hit,
-    hitIndexs,
-    history,
-    hitRatio,
-  });
 
-  document.querySelector('#result').innerHTML = html;
+  if (!sbs) {
+    const html = template({
+      inputs,
+      miss,
+      hit,
+      history,
+      hitRatio,
+    });
+  
+    document.querySelector('#result').innerHTML = html;
+  } else {
+    let steps = 0;
+    let cloneHistory = [];
+    let cloneInputs = [];
+
+
+    setInterval(async () => {
+      for (let i = 0; i < history.length; i++) {
+        cloneHistory[i] = history[i].slice(0, steps);
+      }
+
+      cloneInputs = inputs.slice(0, steps);
+      steps = steps + 1;
+
+      const html = template({
+        inputs: cloneInputs,
+        miss,
+        hit,
+        history: cloneHistory,
+        hitRatio,
+      });
+
+      document.querySelector('#result').innerHTML = html;
+    }, 500);
+  }
 };

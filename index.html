@@ -20,6 +20,10 @@
         <input id="size" type="text" value="4" />
       </div>
       <div class="row">
+        <label for="sbs">Run as Step by Step:</label>
+        <input id="sbs" type="checkbox" />
+      </div>
+      <div class="row">
         <button type="submit">Run</button>
       </div>
     </form>
@@ -36,7 +40,7 @@
         </tr>
         {{/each}}
         <tr>
-          <td></td>
+          <td>Status</td>
           {{#each inputs}}
           <td>{{itContains null @index}}</td>
           {{/each}}
