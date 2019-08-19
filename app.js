@@ -1,5 +1,7 @@
 let interval;
 
+const format = num => `${((parseFloat((num) * 100) || 0).toFixed(2))}%`;
+
 window.onload = () => {
   const form = document.querySelector('#form');
   form.onsubmit = sumbitForm.bind(form);
@@ -10,7 +12,6 @@ window.onload = () => {
 
 const sumbitForm = (event) => {
   event.preventDefault();
-
   clearInterval(interval);
   
   const sbs = event.target.querySelector('#sbs').checked;
@@ -82,7 +83,7 @@ const fifo = (inputs, size, sbs, time) => {
     }
   });
 
-  const hitRatio = parseFloat(((hit / (miss + hit)) * 100).toFixed(2));
+  const hitRatio = format(hit / (miss + hit));
 
   Handlebars.registerHelper('itContains', (num, index) => {
     const found = hitIndexs.find(hit => hit.index === index);
@@ -128,17 +129,30 @@ const fifo = (inputs, size, sbs, time) => {
       cloneInputs = inputs.slice(0, steps);
       steps = steps + 1;
 
+      const hitRatioList = Array.from(document.querySelectorAll('table tr:last-child td')).map(td => td.innerText).slice(1);
+
+      let miss = 0;
+      let hit = 0;
+
+      hitRatioList.forEach((status) => {
+        if (status === 'M') {
+          miss = miss + 1;
+        } else if (status === 'H') {
+          hit = hit + 1;
+        }
+      });
+
       const html = template({
         inputs: cloneInputs,
         miss,
         hit,
         history: cloneHistory,
-        hitRatio,
+        hitRatio: format(hit / (miss + hit)),
       });
 
       document.querySelector('#result').innerHTML = html;
 
-      if (steps === inputs.length) {
+      if (steps === (inputs.length + 2)) {
         clearInterval(interval);
       }
     }, time);
