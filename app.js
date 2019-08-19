@@ -1,9 +1,12 @@
+let interval;
+
 window.onload = () => {
   const form = document.querySelector('#form');
   form.onsubmit = sumbitForm.bind(form);
-}
 
-let interval;
+  const sbs = document.querySelector('#sbs');
+  sbs.addEventListener('change', sbsChanged);
+}
 
 const sumbitForm = (event) => {
   event.preventDefault();
@@ -11,6 +14,7 @@ const sumbitForm = (event) => {
   clearInterval(interval);
   
   const sbs = event.target.querySelector('#sbs').checked;
+  const time = event.target.querySelector('#time').value;
 
   let inputs = event.target.querySelector('#inputs').value;
   let size = event.target.querySelector('#size').value;
@@ -26,10 +30,20 @@ const sumbitForm = (event) => {
     return alert('Form size is not valid.');
   }
 
-  return fifo(inputs, size, sbs);
+  return fifo(inputs, size, sbs, time);
 };
 
-const fifo = (inputs, size, sbs) => {
+const sbsChanged = (event) => {
+  const time = document.querySelector('.time');
+
+  if (event.target.checked) {
+    time.classList.add('show');
+  } else {
+    time.classList.remove('show');
+  }
+};
+
+const fifo = (inputs, size, sbs, time) => {
   let miss = 0;
   let hit = 0;
   let lastIndex = 0;
@@ -37,6 +51,7 @@ const fifo = (inputs, size, sbs) => {
   const stack = new Array(size);
   const history = new Array(size);
   const hitIndexs = new Array();
+
 
   inputs.forEach((input, index) => {
     if (stack.indexOf(input) === -1) {
@@ -67,7 +82,7 @@ const fifo = (inputs, size, sbs) => {
     }
   });
 
-  const hitRatio = (hit / (miss + hit));
+  const hitRatio = parseFloat(((hit / (miss + hit)) * 100).toFixed(2));
 
   Handlebars.registerHelper('itContains', (num, index) => {
     const found = hitIndexs.find(hit => hit.index === index);
@@ -111,7 +126,6 @@ const fifo = (inputs, size, sbs) => {
       }
 
       cloneInputs = inputs.slice(0, steps);
-
       steps = steps + 1;
 
       const html = template({
@@ -127,6 +141,6 @@ const fifo = (inputs, size, sbs) => {
       if (steps === inputs.length) {
         clearInterval(interval);
       }
-    }, 500);
+    }, time);
   }
 };
